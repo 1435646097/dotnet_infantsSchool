@@ -8,9 +8,8 @@ namespace Repository
 {
     public class CostTypeRepository : BaseRepository<CostType>, ICostTypeRepository
     {
-        public CostTypeRepository(InfantsSchoolSystemContext infantsSchoolSystemContext)
+        public CostTypeRepository(InfantsSchoolSystemContext infantsSchoolSystemContext) : base(infantsSchoolSystemContext)
         {
-            base.InfantsSchoolSystemContext = infantsSchoolSystemContext;
         }
     }
 }

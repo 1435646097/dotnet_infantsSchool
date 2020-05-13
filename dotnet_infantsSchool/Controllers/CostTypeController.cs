@@ -8,8 +8,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
-namespace dotnet_infantsSchool.Controller
+namespace dotnet_infantsSchool.Controllers
 {
+    [ApiController]
     [Route("api/CostType")]
     public class CostTypeController : ControllerBase
     {
@@ -20,6 +21,7 @@ namespace dotnet_infantsSchool.Controller
             _costTypeServices = costTypeServices;
         }
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<CostType>>> GetCostType()
         {
             CostType list = await _costTypeServices.GetEntityByIdAsync(1);

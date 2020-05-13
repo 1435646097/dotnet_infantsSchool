@@ -18,7 +18,7 @@ namespace Model.Entitys
         public int? AccountId { get; set; }
         public bool? IsDelete { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual User Account { get; set; }
         public virtual ICollection<Activity> Activity { get; set; }
         public virtual ICollection<GradeCost> GradeCost { get; set; }
         public virtual ICollection<Student> Student { get; set; }

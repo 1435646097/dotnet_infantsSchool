@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Model.Entitys
 {
@@ -14,6 +13,7 @@ namespace Model.Entitys
         public int Id { get; set; }
         public string TypeName { get; set; }
         public bool? IsDelete { get; set; }
+
         public virtual ICollection<GradeCost> GradeCost { get; set; }
     }
 }

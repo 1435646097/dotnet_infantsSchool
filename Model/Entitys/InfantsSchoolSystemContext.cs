@@ -6,13 +6,12 @@ namespace Model.Entitys
 {
     public partial class InfantsSchoolSystemContext : DbContext
     {
+
         public InfantsSchoolSystemContext(DbContextOptions<InfantsSchoolSystemContext> options)
             : base(options)
         {
         }
 
-        public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<AccountRole> AccountRole { get; set; }
         public virtual DbSet<Action> Action { get; set; }
         public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<ActivityPicture> ActivityPicture { get; set; }
@@ -22,49 +21,11 @@ namespace Model.Entitys
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleAction> RoleAction { get; set; }
         public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
-            {
-                entity.Property(e => e.Account1)
-                    .HasColumnName("Account")
-                    .HasMaxLength(20);
-
-                entity.Property(e => e.Address).HasMaxLength(20);
-
-                entity.Property(e => e.AddressDetail).HasMaxLength(50);
-
-                entity.Property(e => e.Brthday).HasColumnType("date");
-
-                entity.Property(e => e.CreateTime)
-                    .HasColumnType("date")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.Name).HasMaxLength(20);
-
-                entity.Property(e => e.Phone).HasMaxLength(20);
-
-                entity.Property(e => e.Pwd).HasMaxLength(20);
-            });
-
-            modelBuilder.Entity<AccountRole>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.AccountRole)
-                    .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97");
-
-                entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.AccountRole)
-                    .HasForeignKey(d => d.Role)
-                    .HasConstraintName("FK__AccountRol__Role__2C3393D0");
-            });
-
             modelBuilder.Entity<Action>(entity =>
             {
                 entity.Property(e => e.Icon).HasMaxLength(50);
@@ -184,6 +145,40 @@ namespace Model.Entitys
                     .WithMany(p => p.Student)
                     .HasForeignKey(d => d.GradeId)
                     .HasConstraintName("FK__Student__GradeId__4222D4EF");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Account).HasMaxLength(20);
+
+                entity.Property(e => e.Address).HasMaxLength(20);
+
+                entity.Property(e => e.AddressDetail).HasMaxLength(50);
+
+                entity.Property(e => e.Brthday).HasColumnType("date");
+
+                entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Name).HasMaxLength(20);
+
+                entity.Property(e => e.Phone).HasMaxLength(20);
+
+                entity.Property(e => e.Pwd).HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.UserRole)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97");
+
+                entity.HasOne(d => d.RoleNavigation)
+                    .WithMany(p => p.UserRole)
+                    .HasForeignKey(d => d.Role)
+                    .HasConstraintName("FK__AccountRol__Role__2C3393D0");
             });
 
             OnModelCreatingPartial(modelBuilder);

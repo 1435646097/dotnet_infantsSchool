@@ -15,6 +15,11 @@ namespace Repository
     {
         public InfantsSchoolSystemContext InfantsSchoolSystemContext { get; set; }
 
+        public BaseRepository(InfantsSchoolSystemContext infantsSchoolSystemContext)
+        {
+            this.InfantsSchoolSystemContext = infantsSchoolSystemContext;
+        }
+
         public async void AddEntityAsync(T entity)
         {
             await InfantsSchoolSystemContext.Set<T>().AddAsync(entity);

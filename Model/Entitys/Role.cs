@@ -7,8 +7,8 @@ namespace Model.Entitys
     {
         public Role()
         {
-            AccountRole = new HashSet<AccountRole>();
             RoleAction = new HashSet<RoleAction>();
+            UserRole = new HashSet<UserRole>();
         }
 
         public int Id { get; set; }
@@ -16,7 +16,7 @@ namespace Model.Entitys
         public string Remark { get; set; }
         public bool? IsDelete { get; set; }
 
-        public virtual ICollection<AccountRole> AccountRole { get; set; }
         public virtual ICollection<RoleAction> RoleAction { get; set; }
+        public virtual ICollection<UserRole> UserRole { get; set; }
     }
 }
