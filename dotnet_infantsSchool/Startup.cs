@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
+using dotnet_infantsSchool.Ext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,63 +37,19 @@ namespace dotnet_infantsSchool
                 setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //数据库连接池配置
             services.AddDbContextPool<InfantsSchoolSystemContext>(option =>
             {
                 option.UseSqlServer(_configuration.GetConnectionString("default"));
-                option.EnableSensitiveDataLogging();
+                //option.EnableSensitiveDataLogging();
                 option.UseLazyLoadingProxies();
             });
-            services.AddSwaggerGen(setup =>
-            {
-                setup.SwaggerDoc("v1", new OpenApiInfo()
-                {
-                    Version = "v1",
-                    Contact = new OpenApiContact()
-                    {
-                        Email = "1435646097@qq.com",
-                        Name = "排骨",
-                        Url = new Uri("http://www.baidu.com")
-                    },
-                    Description = "一个非常简单的WEb Api",
-                    Title = "千里马幼儿园后台管理系统Api"
-                });
-                setup.OperationFilter<AddResponseHeadersFilter>();
-                setup.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-
-                setup.OperationFilter<SecurityRequirementsOperationFilter>();
-                setup.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
-                {
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Name = "Authorization",
-                    Description = "请输入accessToken"
-                });
-            });
-            services.AddAuthentication("Bearer").AddJwtBearer(configure =>
-            {
-                configure.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = _configuration["Authentication:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = _configuration["Authentication:Audience"],
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SigningKey"])),
-                    RequireExpirationTime = true,
-                    ClockSkew = TimeSpan.FromDays(7),
-                    ValidateLifetime = true
-                };
-            });
-            services.AddCors(option =>
-            {
-                option.AddPolicy("default", configure =>
-                {
-                    configure.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                    configure.WithExposedHeaders("X-Pagination");
-                });
-            });
+            //Swagger配置
+            services.MySwagger();
+            //Bearer认证配置
+            services.MyAuthentication(_configuration);
+            //Cors配置
+            services.MyCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -123,10 +80,12 @@ namespace dotnet_infantsSchool
             string basePath = AppContext.BaseDirectory;
             Assembly servicesAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Services.Dll"));
             Assembly repositoryAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Repository.Dll"));
+            //注入Services程序集
             containerBuilder.RegisterAssemblyTypes(servicesAssembly)
                             .AsImplementedInterfaces()
                             .InstancePerLifetimeScope()
                             .EnableClassInterceptors();
+            //注入Repository程序集
             containerBuilder.RegisterAssemblyTypes(repositoryAssembly)
                             .AsImplementedInterfaces()
                             .InstancePerLifetimeScope()

@@ -175,9 +175,9 @@ namespace Model.Entitys
                     .HasForeignKey(d => d.AccountId)
                     .HasConstraintName("FK__AccountRo__Accou__2B3F6F97");
 
-                entity.HasOne(d => d.RoleNavigation)
+                entity.HasOne(d => d.Role)
                     .WithMany(p => p.UserRole)
-                    .HasForeignKey(d => d.Role)
+                    .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK__AccountRol__Role__2C3393D0");
             });
 

@@ -7,9 +7,9 @@ namespace Model.Entitys
     {
         public int Id { get; set; }
         public int? AccountId { get; set; }
-        public int? Role { get; set; }
+        public int? RoleId { get; set; }
 
         public virtual User Account { get; set; }
-        public virtual Role RoleNavigation { get; set; }
+        public virtual Role Role { get; set; }
     }
 }
