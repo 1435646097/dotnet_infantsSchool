@@ -14,6 +14,8 @@ namespace dotnet_infantsSchool.Profiles
         {
             CreateMap<Model.Entitys.Action, MenuDto>();
             CreateMap<Model.Entitys.Action, ActionDto>();
+            CreateMap<ActionAddDto, Model.Entitys.Action>();
+            CreateMap<ActionDto, Model.Entitys.Action>();
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using IRepository;
 using IServices;
+using Microsoft.EntityFrameworkCore;
 using Model.Entitys;
+using Model.Helper;
+using Model.Params;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +24,26 @@ namespace Services
             _roleActionRepository = roleActionRepository;
             base.CurrentRepository = _actionRepository;
         }
+        public async Task<PagedList<Model.Entitys.Action>> GetActionPaged(ActionParams actionParams)
+        {
+            IQueryable<Model.Entitys.Action> actions = _actionRepository.GetEntitys();
+            //是否为一级权限
+            if (actionParams.Level == 1)
+            {
+                actions = actions.Where(a => a.Pid == 0);
+            }
+            if (actionParams.Level == 2)
+            {
+                actions = actions.Where(a => a.Pid != 0);
+            }
+            //通过名称模糊查询
+            if (!string.IsNullOrWhiteSpace(actionParams.Name))
+            {
+                actions = actions.Where(a => a.Name.Contains(actionParams.Name));
+            }
+            return await PagedList<Model.Entitys.Action>.CreatePagedList(actions, actionParams.PageSize, actionParams.PageNum);
+        }
+
         public async Task<bool> SetRoleAction(int roleId, IEnumerable<int> actionId)
         {
             Role role = await _roleRepository.GetEntityByIdAsync(roleId);
@@ -35,5 +59,28 @@ namespace Services
             }
             return await _roleActionRepository.SaveChangesAsync();
         }
+        public async Task<bool> DeleteAction(int id)
+        {
+            var entity = await _actionRepository.GetEntityByIdAsync(id);
+            var childrenAction = await _actionRepository.GetEntitys().Where(a => a.Pid == entity.Id).ToListAsync();
+            //对子节点的删除操作
+            foreach (var actionItem in childrenAction)
+            {
+                _actionRepository.DeleteEntity(actionItem);
+                var roleAction = actionItem.RoleAction.ToList();
+                foreach (var roleActionItem in roleAction)
+                {
+                    _roleActionRepository.DeleteEntity(roleActionItem);
+                }
+            }
+            //对父节点的操作
+            _actionRepository.DeleteEntity(entity);
+            foreach (var item in entity.RoleAction.ToList())
+            {
+                _roleActionRepository.DeleteEntity(item);
+            }
+            return await _actionRepository.SaveChangesAsync();
+        }
+
     }
 }
