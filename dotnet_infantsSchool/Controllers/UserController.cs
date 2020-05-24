@@ -75,7 +75,7 @@ namespace dotnet_infantsSchool.Controllers
             {
                 res.Code = 400;
                 res.Success = false;
-                res.Msg = "该账户已存在，请重新修改！！！";
+                res.Msg = "该账户已存在，请修改账户！！！";
                 return Ok(res);
             }
             Model.Entitys.User entity = _mapper.Map<User>(userAddDto);

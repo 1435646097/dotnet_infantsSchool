@@ -155,7 +155,7 @@ namespace Model.Entitys
 
                 entity.Property(e => e.AddressDetail).HasMaxLength(50);
 
-                entity.Property(e => e.Brthday).HasColumnType("date");
+                entity.Property(e => e.Birthday).HasColumnType("date");
 
                 entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
 
