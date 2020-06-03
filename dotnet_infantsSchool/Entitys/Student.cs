@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Entitys
+namespace dotnet_infantsSchool.Entitys
 {
     public partial class Student
     {

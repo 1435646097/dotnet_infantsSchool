@@ -43,7 +43,7 @@ namespace dotnet_infantsSchool.Ext
             });
             return services;
         }
-        public static IServiceCollection MyAuthentication(this IServiceCollection services,IConfiguration _configuration)
+        public static IServiceCollection MyAuthentication(this IServiceCollection services, IConfiguration _configuration)
         {
             services.AddAuthentication("Bearer").AddJwtBearer(configure =>
             {
@@ -68,7 +68,7 @@ namespace dotnet_infantsSchool.Ext
             {
                 option.AddPolicy("default", configure =>
                 {
-                    configure.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080")
+                    configure.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080", "http://47.115.23.104:80", "http://47.115.23.104", "http://172.16.153.44:8080")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                     configure.WithExposedHeaders("X-Pagination");

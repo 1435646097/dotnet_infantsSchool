@@ -13,7 +13,6 @@ namespace Model.Dtos
         public string Phone { get; set; }
         public string Address { get; set; }
         public string AddressDetail { get; set; }
-        public DateTime CreateTime { get; set; }
         public bool IsDelete { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Model.Dtos;
 using Model.Entitys;
@@ -56,7 +57,7 @@ namespace dotnet_infantsSchool.Controllers
             return Ok(res);
         }
         [HttpGet(Name = nameof(GetActionList))]
-        public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionList([FromQuery]ActionParams actionParams)
+        public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionList([FromQuery] ActionParams actionParams)
         {
             MessageModel<IEnumerable<ActionDto>> res = new MessageModel<IEnumerable<ActionDto>>();
             PagedList<Model.Entitys.Action> list = await _actionServices.GetActionPaged(actionParams);
@@ -79,11 +80,33 @@ namespace dotnet_infantsSchool.Controllers
         public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
-            var actionParents = await _actionServices.GetEntitys().Where(a => a.Pid == 0 && a.IsDelete == false).ToListAsync();
+            //获得所有的一级权限
+            var oneActions = await _actionServices.GetEntitys().Where(a => a.Pid == 0 && a.IsDelete == false).ToListAsync();
+            IEnumerable<MenuDto> oneActionDtos = _mapper.Map<IEnumerable<MenuDto>>(oneActions);
+            foreach (var one in oneActionDtos)
+            {
+                //获得所有的二级权限
+                var twoActions = _actionServices.GetEntitys().Where(a => a.Pid == one.Id);
+                one.Children = _mapper.Map<IEnumerable<MenuDto>>(twoActions);
+                foreach (var three in one.Children)
+                {
+                    //获取所有的三级权限
+                    var threeActions = _actionServices.GetEntitys().Where(a => a.Pid == three.Id);
+                    three.Children = _mapper.Map<IEnumerable<MenuDto>>(threeActions);
+                }
+            }
+            res.Data = oneActionDtos;
+            return Ok(res);
+        }
+        [HttpGet]
+        public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetOneTwoActionTree()
+        {
+            MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
+            var actionParents = await _actionServices.GetEntitys().Where(a => a.ActionTypeId == 1).ToListAsync();
             IEnumerable<MenuDto> menuDtoList = _mapper.Map<IEnumerable<MenuDto>>(actionParents);
             foreach (var item in menuDtoList)
             {
-                var actionChildren = _actionServices.GetEntitys().Where(a => a.Pid == item.Id);
+                var actionChildren = await _actionServices.GetEntitys().Where(a => a.Pid == item.Id).ToListAsync();
                 item.Children = _mapper.Map<IEnumerable<MenuDto>>(actionChildren);
             }
             res.Data = menuDtoList;
@@ -109,7 +132,7 @@ namespace dotnet_infantsSchool.Controllers
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<int>>>> GetActionByRoleId(int id)
         {
-            MessageModel<IEnumerable<int?>> res = new MessageModel<IEnumerable<int?>>();
+            MessageModel<IEnumerable<int>> res = new MessageModel<IEnumerable<int>>();
             bool result = await _roleServices.ExistEntityAsync(r => r.Id == id);
             if (!result)
             {
@@ -119,8 +142,30 @@ namespace dotnet_infantsSchool.Controllers
                 return Ok(res);
             }
             Role entity = await _roleServices.GetEntityByIdAsync(id);
-            IEnumerable<int?> actionIds = entity.RoleAction.Where(a => a.Action.Pid != 0).Select(a => a.ActionId);
-            res.Data = actionIds;
+            IEnumerable<int?> actionIds = entity.RoleAction.Select(a => a.ActionId);
+            List<Model.Entitys.Action> actionList = await _actionServices.GetEntitys().Where(a => actionIds.Contains(a.Id)).ToListAsync();
+            List<int> ids = new List<int>();
+            List<int> oneActionIds = actionList.Where(a => a.Pid == 0).Select(a => a.Id).ToList();
+            List<int> twoActionIds = actionList.Where(a => oneActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
+            foreach (var item in oneActionIds)
+            {
+                var temp = actionList.Where(a => a.Pid == item).FirstOrDefault();
+                if (temp == null)
+                {
+                    ids.Add(item);
+                }
+            }
+            foreach (var item in twoActionIds)
+            {
+                var temp = actionList.Where(a => a.Pid == item).FirstOrDefault();
+                if (temp == null)
+                {
+                    ids.Add(item);
+                }
+            }
+            List<int> threeActionIds = actionList.Where(a => twoActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
+            ids.AddRange(threeActionIds);
+            res.Data = ids;
             return Ok(res);
         }
         [HttpPost]
@@ -160,6 +205,7 @@ namespace dotnet_infantsSchool.Controllers
                 return Ok(res);
             }
             await _actionServices.DeleteAction(id);
+
             return Ok(res);
         }
         [HttpPut]
@@ -200,6 +246,16 @@ namespace dotnet_infantsSchool.Controllers
                     });
             }
             return string.Empty;
+        }
+        [HttpGet]
+        public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
+        {
+            MessageModel<UserDto> res = new MessageModel<UserDto>();
+            string uid = HttpContext.User.Claims.Where(c => c.Type == "id").FirstOrDefault().Value;
+            Model.Entitys.User entity = await _userServices.GetEntityByIdAsync(Convert.ToInt32(uid));
+            UserDto dto = _mapper.Map<UserDto>(entity);
+            res.Data = dto;
+            return Ok(res);
         }
     }
 }

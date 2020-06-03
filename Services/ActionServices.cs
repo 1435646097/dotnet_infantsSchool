@@ -27,14 +27,10 @@ namespace Services
         public async Task<PagedList<Model.Entitys.Action>> GetActionPaged(ActionParams actionParams)
         {
             IQueryable<Model.Entitys.Action> actions = _actionRepository.GetEntitys();
-            //是否为一级权限
-            if (actionParams.Level == 1)
+            //判断为几级权限
+            if (actionParams.Level > 0)
             {
-                actions = actions.Where(a => a.Pid == 0);
-            }
-            if (actionParams.Level == 2)
-            {
-                actions = actions.Where(a => a.Pid != 0);
+                actions = actions.Where(a => a.ActionTypeId == actionParams.Level);
             }
             //通过名称模糊查询
             if (!string.IsNullOrWhiteSpace(actionParams.Name))

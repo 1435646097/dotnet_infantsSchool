@@ -11,6 +11,7 @@ namespace dotnet_infantsSchool.Profiles
             CreateMap<User, UserDto>();
             CreateMap<UserAddDto, User>();
             CreateMap<UserEditDto, User>();
+            CreateMap<User, TeacherDto>();
         }
     }
 }

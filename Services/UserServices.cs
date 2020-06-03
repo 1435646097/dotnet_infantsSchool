@@ -24,6 +24,10 @@ namespace Services
         public async Task<PagedList<User>> GetUserPagedAsync(UserParams userParams)
         {
             IQueryable<User> items = this._userRepository.GetEntitys();
+            if (!string.IsNullOrWhiteSpace(userParams.Name))
+            {
+                items = items.Where(u => u.Name.Contains(userParams.Name));
+            }
             PagedList<User> list = await PagedList<User>.CreatePagedList(items, userParams.PageSize, userParams.PageNum);
             return list;
         }

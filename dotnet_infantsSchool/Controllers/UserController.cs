@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Model.Dtos;
 using Model.Entitys;
 using Model.Helper;
@@ -8,6 +10,7 @@ using Model.Params;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
@@ -17,16 +20,18 @@ namespace dotnet_infantsSchool.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userServices;
+        private readonly IUserRoleServices _userRoleServices;
         private readonly IMapper _mapper;
 
-        public UserController(IUserServices userServices, IMapper mapper)
+        public UserController(IUserServices userServices, IUserRoleServices userRoleServices, IMapper mapper)
         {
             _userServices = userServices;
+            _userRoleServices = userRoleServices;
             _mapper = mapper;
         }
 
         [HttpGet(Name = nameof(GetUser))]
-        public async Task<ActionResult<IEnumerable<MessageModel<UserDto>>>> GetUser([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<MessageModel<UserDto>>>> GetUser([FromQuery] UserParams userParams)
         {
             MessageModel<IEnumerable<UserDto>> res = new MessageModel<IEnumerable<UserDto>>();
             PagedList<User> list = await _userServices.GetUserPagedAsync(userParams);
@@ -105,7 +110,6 @@ namespace dotnet_infantsSchool.Controllers
         [HttpPut]
         public async Task<ActionResult<MessageModel<UserDto>>> EditUser(UserEditDto userEditDto)
         {
-
             MessageModel<UserDto> res = new MessageModel<UserDto>();
             bool result = await _userServices.ExistEntityAsync(u => u.Id == userEditDto.Id);
             if (!result)
@@ -120,7 +124,29 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
+        [Authorize]
+        [HttpGet("self")]
+        public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
+        {
+            MessageModel<UserDto> res = new MessageModel<UserDto>();
+            string uid = HttpContext.User.Claims.Where(c => c.Type == "id").FirstOrDefault().Value;
+            User entity = await _userServices.GetEntityByIdAsync(Convert.ToInt32(uid));
+            res.Data = _mapper.Map<UserDto>(entity);
+            return Ok(res);
+        }
 
+        [HttpGet("teacher")]
+        public async Task<ActionResult<MessageModel<IEnumerable<TeacherDto>>>> GetTeacher()
+        {
+            MessageModel<IEnumerable<TeacherDto>> res = new MessageModel<IEnumerable<TeacherDto>>();
+            //所有拥有老师这个角色的id集合
+            IEnumerable<int?> userIds = await _userRoleServices.GetEntitys().Where(u => u.RoleId == 2).Select(u => u.AccountId).ToListAsync();
+            //所有的老师集合
+            IEnumerable<User> entitys = await _userServices.GetEntitys().Where(u => userIds.Contains(u.Id)).ToListAsync();
+            IEnumerable<TeacherDto> teacherDtos = _mapper.Map<IEnumerable<TeacherDto>>(entitys);
+            res.Data = teacherDtos;
+            return Ok(res);
+        }
         private string CreateLink(PagedType pagedType, UserParams userParams)
         {
             switch (pagedType)

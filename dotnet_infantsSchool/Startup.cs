@@ -7,17 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Model.Entitys;
-using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace dotnet_infantsSchool
 {
@@ -78,8 +72,8 @@ namespace dotnet_infantsSchool
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             string basePath = AppContext.BaseDirectory;
-            Assembly servicesAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Services.Dll"));
-            Assembly repositoryAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Repository.Dll"));
+            Assembly servicesAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Services.dll"));
+            Assembly repositoryAssembly = Assembly.LoadFrom(Path.Combine(basePath, "Repository.dll"));
             //×¢ÈëServices³ÌÐò¼¯
             containerBuilder.RegisterAssemblyTypes(servicesAssembly)
                             .AsImplementedInterfaces()

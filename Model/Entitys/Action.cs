@@ -16,6 +16,7 @@ namespace Model.Entitys
         public string Icon { get; set; }
         public int? Pid { get; set; }
         public string Remark { get; set; }
+        public int? ActionTypeId { get; set; }
         public bool? IsDelete { get; set; }
 
         public virtual ICollection<RoleAction> RoleAction { get; set; }

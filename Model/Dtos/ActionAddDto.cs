@@ -7,5 +7,6 @@
         public string Icon { get; set; }
         public int Pid { get; set; }
         public string Remark { get; set; }
+        public int Level { get; set; }
     }
 }
