@@ -1,4 +1,5 @@
 ﻿using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entitys;
@@ -12,6 +13,7 @@ namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
     [Route("api/CostType")]
+    [Authorize("actionAuthrization")]
     public class CostTypeController : ControllerBase
     {
         private readonly ICostTypeServices _costTypeServices;

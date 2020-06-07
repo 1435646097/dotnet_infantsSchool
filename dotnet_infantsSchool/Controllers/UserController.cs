@@ -17,6 +17,7 @@ namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
     [Route("api/user")]
+    [Authorize("actionAuthrization")]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userServices;
@@ -145,6 +146,23 @@ namespace dotnet_infantsSchool.Controllers
             IEnumerable<User> entitys = await _userServices.GetEntitys().Where(u => userIds.Contains(u.Id)).ToListAsync();
             IEnumerable<TeacherDto> teacherDtos = _mapper.Map<IEnumerable<TeacherDto>>(entitys);
             res.Data = teacherDtos;
+            return Ok(res);
+        }
+        [HttpPut("EditPass")]
+        [Authorize]
+        public async Task<ActionResult<MessageModel<string>>> EditPass(EditPassDto editPassDto)
+        {
+            MessageModel<string> res = new MessageModel<string>();
+            int id = Convert.ToInt32(HttpContext.User.Claims.Where(c => c.Type == "id").FirstOrDefault().Value);
+            Model.Entitys.User entity = await _userServices.GetEntityByIdAsync(id);
+            if (entity.Pwd == editPassDto.OldPass)
+            {
+                entity.Pwd = editPassDto.Pass;
+                await _userServices.CurrentRepository.SaveChangesAsync();
+                return Ok(res);
+            }
+            res.Success = false;
+            res.Msg = "请输入正确的密码!!!";
             return Ok(res);
         }
         private string CreateLink(PagedType pagedType, UserParams userParams)

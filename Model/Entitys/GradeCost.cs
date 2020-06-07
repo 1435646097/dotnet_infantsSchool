@@ -14,5 +14,6 @@ namespace Model.Entitys
         public bool? IsDelete { get; set; }
 
         public virtual CostType CostType { get; set; }
+        public virtual Grade Grade { get; set; }
     }
 }

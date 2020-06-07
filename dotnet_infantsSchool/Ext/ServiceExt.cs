@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -45,7 +48,12 @@ namespace dotnet_infantsSchool.Ext
         }
         public static IServiceCollection MyAuthentication(this IServiceCollection services, IConfiguration _configuration)
         {
-            services.AddAuthentication("Bearer").AddJwtBearer(configure =>
+            services.AddScoped<IAuthorizationHandler, ActionHandler>();
+            services.AddAuthentication(configureOptions=> {
+                configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                configureOptions.DefaultChallengeScheme = nameof(ApiResponseHandler);
+                configureOptions.DefaultForbidScheme = nameof(ApiResponseHandler);
+            }).AddJwtBearer(configure =>
             {
                 configure.TokenValidationParameters = new TokenValidationParameters()
                 {
@@ -59,6 +67,10 @@ namespace dotnet_infantsSchool.Ext
                     ClockSkew = TimeSpan.FromDays(7),
                     ValidateLifetime = true
                 };
+            }).AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
+            services.AddAuthorization(configure =>
+            {
+                configure.AddPolicy("actionAuthrization", policy => { policy.Requirements.Add(new ActionRequirement()); });
             });
             return services;
         }

@@ -12,6 +12,8 @@ namespace Model.Dtos
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public string Phone { get; set; }
+        public string Photo { get; set; }
+        public bool Gender { get; set; }
         public string Address { get; set; }
         public string AddressDetail { get; set; }
         public bool IsDelete { get; set; }

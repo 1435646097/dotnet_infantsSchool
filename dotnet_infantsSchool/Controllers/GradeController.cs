@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Dtos;
@@ -14,6 +15,7 @@ namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
     [Route("api/grade")]
+    [Authorize("actionAuthrization")]
     public class GradeController : ControllerBase
     {
         private readonly IGradeServices _gradeServices;

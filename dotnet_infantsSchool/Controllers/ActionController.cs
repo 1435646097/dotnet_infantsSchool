@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize("actionAuthrization")]
     [Route("api/[controller]/[action]")]
     public class ActionController : ControllerBase
     {
@@ -39,6 +39,7 @@ namespace dotnet_infantsSchool.Controllers
             _actionServices = actionServices;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetMenu()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
@@ -77,6 +78,7 @@ namespace dotnet_infantsSchool.Controllers
             return Ok(res);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
@@ -99,6 +101,7 @@ namespace dotnet_infantsSchool.Controllers
             return Ok(res);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetOneTwoActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
@@ -113,6 +116,7 @@ namespace dotnet_infantsSchool.Controllers
             return Ok(res);
         }
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ActionDto>> GetActionById(int id)
         {
             MessageModel<ActionDto> res = new MessageModel<ActionDto>();
@@ -130,6 +134,7 @@ namespace dotnet_infantsSchool.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<int>>>> GetActionByRoleId(int id)
         {
             MessageModel<IEnumerable<int>> res = new MessageModel<IEnumerable<int>>();
@@ -248,6 +253,7 @@ namespace dotnet_infantsSchool.Controllers
             return string.Empty;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
         {
             MessageModel<UserDto> res = new MessageModel<UserDto>();

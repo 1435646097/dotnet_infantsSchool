@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
     [Route("api/role")]
+    [Authorize("actionAuthrization")]
     public class RoleController : ControllerBase
     {
         private readonly IMapper _mapper;

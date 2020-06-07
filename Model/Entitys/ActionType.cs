@@ -11,7 +11,7 @@ namespace Model.Entitys
         }
 
         public int Id { get; set; }
-        public string ActionType1 { get; set; }
+        public string TypeName { get; set; }
 
         public virtual ICollection<Action> Action { get; set; }
     }

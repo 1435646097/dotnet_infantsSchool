@@ -50,7 +50,7 @@ namespace dotnet_infantsSchool.Controllers
                  {
                      new Claim("id",user.Id.ToString()),
                      new Claim(ClaimTypes.Name,user.Name),
-                     new Claim(ClaimTypes.Role,userRoles)
+                     new Claim(ClaimTypes.Role,userRoles),
                  },
                  expires: DateTime.Now.AddDays(7),
                  signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SigningKey"])), SecurityAlgorithms.HmacSha256)

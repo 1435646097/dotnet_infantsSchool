@@ -4,6 +4,7 @@ using AutoMapper;
 using dotnet_infantsSchool.Ext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,7 @@ namespace dotnet_infantsSchool
                 setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             //数据库连接池配置
             services.AddDbContextPool<InfantsSchoolSystemContext>(option =>
             {
