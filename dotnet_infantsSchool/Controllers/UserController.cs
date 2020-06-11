@@ -125,7 +125,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("self")]
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
         {
@@ -135,7 +135,25 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        [AllowAnonymous]
+        [HttpPut("self")]
+        public async Task<ActionResult<MessageModel<UserDto>>> EditSelfUser(UserEditDto userEditDto)
+        {
+            MessageModel<UserDto> res = new MessageModel<UserDto>();
+            bool result = await _userServices.ExistEntityAsync(u => u.Id == userEditDto.Id);
+            if (!result)
+            {
+                res.Code = 404;
+                res.Msg = "请输入正确的用户编号";
+                res.Success = false;
+                return Ok(res);
+            }
+            Model.Entitys.User entity = _mapper.Map<User>(userEditDto);
+            await _userServices.EditEntityAsync(entity);
+            res.Data = _mapper.Map<UserDto>(entity);
+            return Ok(res);
+        }
+        [AllowAnonymous]
         [HttpGet("teacher")]
         public async Task<ActionResult<MessageModel<IEnumerable<TeacherDto>>>> GetTeacher()
         {
@@ -148,8 +166,8 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = teacherDtos;
             return Ok(res);
         }
+        [AllowAnonymous]
         [HttpPut("EditPass")]
-        [Authorize]
         public async Task<ActionResult<MessageModel<string>>> EditPass(EditPassDto editPassDto)
         {
             MessageModel<string> res = new MessageModel<string>();

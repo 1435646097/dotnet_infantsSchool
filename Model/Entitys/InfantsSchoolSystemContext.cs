@@ -151,8 +151,6 @@ namespace Model.Entitys
 
                 entity.Property(e => e.Name).HasMaxLength(20);
 
-                entity.Property(e => e.Phone).HasMaxLength(30);
-
                 entity.HasOne(d => d.Grade)
                     .WithMany(p => p.Student)
                     .HasForeignKey(d => d.GradeId)
