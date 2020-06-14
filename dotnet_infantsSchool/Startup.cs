@@ -13,6 +13,8 @@ using Model.Entitys;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace dotnet_infantsSchool
 {
@@ -46,6 +48,9 @@ namespace dotnet_infantsSchool
             services.MyAuthentication(_configuration);
             //Cors≈‰÷√
             services.MyCors();
+            services.AddSingleton<HtmlEncoder>(
+     HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
+                                               UnicodeRanges.CjkUnifiedIdeographs }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

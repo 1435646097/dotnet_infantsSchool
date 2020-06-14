@@ -55,7 +55,6 @@ namespace Model.Entitys
 
             modelBuilder.Entity<Activity>(entity =>
             {
-                entity.Property(e => e.EndTime).HasColumnType("date");
 
                 entity.Property(e => e.Name).HasMaxLength(20);
 
