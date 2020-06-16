@@ -32,7 +32,7 @@ namespace dotnet_infantsSchool
             services.AddControllers().AddNewtonsoftJson(setup =>
             {
                 setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
+            }).AddXmlSerializerFormatters();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             //数据库连接池配置
@@ -48,9 +48,6 @@ namespace dotnet_infantsSchool
             services.MyAuthentication(_configuration);
             //Cors配置
             services.MyCors();
-            services.AddSingleton<HtmlEncoder>(
-     HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
-                                               UnicodeRanges.CjkUnifiedIdeographs }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

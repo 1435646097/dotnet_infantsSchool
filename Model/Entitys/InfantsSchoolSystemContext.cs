@@ -182,12 +182,12 @@ namespace Model.Entitys
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97");
+                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97").OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__UserRole__RoleId__4D94879B");
+                    .HasConstraintName("FK__UserRole__RoleId__4D94879B").OnDelete(DeleteBehavior.Cascade);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -19,6 +19,7 @@ namespace Model.Entitys
         public string Remark { get; set; }
         public int? ActionTypeId { get; set; }
         public bool? IsDelete { get; set; }
+        public int? OrderBy { get; set; }
 
         public virtual ActionType ActionType { get; set; }
         public virtual ICollection<RoleAction> RoleAction { get; set; }

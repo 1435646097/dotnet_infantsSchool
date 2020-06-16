@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using dotnet_infantsSchool.Ext;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,20 +24,36 @@ namespace dotnet_infantsSchool.Controllers
         private readonly IMapper _mapper;
         private readonly IRoleServices _roleServices;
         private readonly IRoleActionServices _roleActionServices;
+        private readonly IActionServices _actionServices;
 
-        public RoleController(IMapper mapper, IRoleServices roleServices, IRoleActionServices roleActionServices)
+        public RoleController(IMapper mapper, IRoleServices roleServices, IRoleActionServices roleActionServices, IActionServices actionServices)
         {
             _mapper = mapper;
             _roleServices = roleServices;
             _roleActionServices = roleActionServices;
+            _actionServices = actionServices;
         }
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<RoleDto>>>> GetRole()
         {
             MessageModel<IEnumerable<RoleDto>> res = new MessageModel<IEnumerable<RoleDto>>();
-            List<Role> roles = await _roleServices.GetEntitys().ToListAsync();
-            IEnumerable<RoleDto> rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
-            res.Data = rolesDto;
+            List<Role> roleList = await _roleServices.GetEntitys().ToListAsync();
+            List<RoleDto> roleDtos = _mapper.Map<List<RoleDto>>(roleList);
+            for (int i = 0; i < roleList.Count; i++)
+            {
+                List<int?> aIds = roleList[i].RoleAction.Select(a => a.ActionId).ToList();
+                List<Model.Entitys.Action> actions = await _actionServices.GetEntitys().Where(a => aIds.Contains(a.Id)).ToListAsync();
+                List<ActionTreeDto> actionTreeDtos = _mapper.Map<List<ActionTreeDto>>(actions);
+                ActionTreeDto rootRoot = new ActionTreeDto
+                {
+                    Id = 0,
+                    Pid = 0,
+                    Name = "根节点"
+                };
+                RecursionHelper.LoopToAppendChildren(actionTreeDtos, rootRoot, 0);
+                roleDtos[i].Children = actionTreeDtos.Where(a => a.Pid == 0).ToList();
+            }
+            res.Data = roleDtos;
             return Ok(res);
         }
         [HttpGet("{id}")]
@@ -94,5 +111,6 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = "删除角色成功";
             return Ok(res);
         }
+
     }
 }

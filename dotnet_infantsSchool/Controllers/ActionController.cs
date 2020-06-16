@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using dotnet_infantsSchool.Ext;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +48,7 @@ namespace dotnet_infantsSchool.Controllers
             User entity = await _userServices.GetEntityByIdAsync(Convert.ToInt32(uid));
             var rids = entity.UserRole.Select(r => r.RoleId);
             var aids = _roleActionServices.GetEntitys().Where(r => rids.Contains(r.RoleId)).Select(r => r.ActionId);
-            var actionParents = _actionServices.GetEntitys().Where(a => aids.Contains(a.Id) && a.Pid == 0);
+            var actionParents = _actionServices.GetEntitys().Where(a => aids.Contains(a.Id) && a.Pid == 0).OrderBy(a=>a.OrderBy);
             IEnumerable<MenuDto> menuDtoList = _mapper.Map<IEnumerable<MenuDto>>(actionParents);
             foreach (var item in menuDtoList)
             {
@@ -83,7 +84,7 @@ namespace dotnet_infantsSchool.Controllers
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
             //获得所有的一级权限
-            var oneActions = await _actionServices.GetEntitys().Where(a => a.Pid == 0 && a.IsDelete == false).ToListAsync();
+            var oneActions = await _actionServices.GetEntitys().Where(a => a.Pid == 0 && a.IsDelete == false).OrderBy(a=>a.OrderBy).ToListAsync();
             IEnumerable<MenuDto> oneActionDtos = _mapper.Map<IEnumerable<MenuDto>>(oneActions);
             foreach (var one in oneActionDtos)
             {
@@ -105,7 +106,7 @@ namespace dotnet_infantsSchool.Controllers
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetOneTwoActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
-            var actionParents = await _actionServices.GetEntitys().Where(a => a.ActionTypeId == 1).ToListAsync();
+            var actionParents = await _actionServices.GetEntitys().Where(a => a.ActionTypeId == 1).OrderBy(a=>a.OrderBy).ToListAsync();
             IEnumerable<MenuDto> menuDtoList = _mapper.Map<IEnumerable<MenuDto>>(actionParents);
             foreach (var item in menuDtoList)
             {
@@ -148,7 +149,7 @@ namespace dotnet_infantsSchool.Controllers
             }
             Role entity = await _roleServices.GetEntityByIdAsync(id);
             IEnumerable<int?> actionIds = entity.RoleAction.Select(a => a.ActionId);
-            List<Model.Entitys.Action> actionList = await _actionServices.GetEntitys().Where(a => actionIds.Contains(a.Id)).ToListAsync();
+            List<Model.Entitys.Action> actionList = await _actionServices.GetEntitys().Where(a => actionIds.Contains(a.Id)).OrderBy(a=>a.OrderBy).ToListAsync();
             List<int> ids = new List<int>();
             List<int> oneActionIds = actionList.Where(a => a.Pid == 0).Select(a => a.Id).ToList();
             List<int> twoActionIds = actionList.Where(a => oneActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
@@ -196,6 +197,33 @@ namespace dotnet_infantsSchool.Controllers
                 return Ok(res);
             }
             await _actionServices.SetRoleAction(roleId, actionId);
+            return Ok(res);
+        }
+        [HttpDelete("{roleId}/Action/{actionId}")]
+        public async Task<ActionResult<MessageModel<ActionTreeDto>>> DeleteActionByRoleId(int roleId, int actionId)
+        {
+            MessageModel<IEnumerable<ActionTreeDto>> res = new MessageModel<IEnumerable<ActionTreeDto>>();
+            bool result = await _roleServices.ExistEntityAsync(r => r.Id == roleId);
+            if (!result)
+            {
+                res.Code = 404;
+                res.Msg = "请输入正确的角色编号";
+                res.Success = false;
+                return Ok(res);
+            }
+            RoleAction roleAction = await _roleActionServices.GetEntitys().Where(a => a.RoleId == roleId && a.ActionId == actionId).FirstOrDefaultAsync();
+            await _roleActionServices.DeleteEntityAsync(roleAction);
+            List<int?> aIds = await _roleActionServices.GetEntitys().Where(a => a.RoleId == roleId).Select(a => a.ActionId).ToListAsync();
+            List<Model.Entitys.Action> actions = await _actionServices.GetEntitys().Where(a => aIds.Contains(a.Id)).OrderBy(a=>a.OrderBy).ToListAsync();
+            List<ActionTreeDto> actionTreeDtos = _mapper.Map<List<ActionTreeDto>>(actions);
+            ActionTreeDto rootRoot = new ActionTreeDto
+            {
+                Id = 0,
+                Pid = 0,
+                Name = "根节点"
+            };
+            RecursionHelper.LoopToAppendChildren(actionTreeDtos, rootRoot, 0);
+            res.Data = actionTreeDtos.Where(a => a.Pid == 0).ToList();
             return Ok(res);
         }
         [HttpDelete("{id}")]
