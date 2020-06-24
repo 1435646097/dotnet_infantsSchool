@@ -19,10 +19,12 @@ namespace dotnet_infantsSchool.Controllers
     public class PhotoController : ControllerBase
     {
         private readonly IUserServices _userServices;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PhotoController(IUserServices userServices)
+        public PhotoController(IUserServices userServices, IHttpContextAccessor httpContextAccessor)
         {
             _userServices = userServices;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpPost]
         public async Task<MessageModel<string>> UploadImg([FromServices] IWebHostEnvironment environment)
@@ -31,7 +33,6 @@ namespace dotnet_infantsSchool.Controllers
             string path = string.Empty;
             string foldername = "images";
             IFormFileCollection files = null;
-
             try
             {
                 files = Request.Form.Files;

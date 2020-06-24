@@ -15,12 +15,16 @@ using System.IO;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 
 namespace dotnet_infantsSchool
 {
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        public static ILoggerRepository repository { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -29,12 +33,18 @@ namespace dotnet_infantsSchool
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(setup =>
+            repository = LogManager.CreateRepository("InfantsSchool");
+            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
+            services.AddSingleton<ILoggerHelper, LogHelper>();
+            services.AddControllers(setup =>
+            {
+                setup.Filters.Add(typeof(GlobalExceptionFilter));
+            }).AddNewtonsoftJson(setup =>
             {
                 setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            }).AddXmlSerializerFormatters();
+            });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
             //数据库连接池配置
             services.AddDbContextPool<InfantsSchoolSystemContext>(option =>
             {
