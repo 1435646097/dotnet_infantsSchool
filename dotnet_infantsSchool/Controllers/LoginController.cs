@@ -1,5 +1,5 @@
-﻿using IServices;
-using log4net.Core;
+﻿using Common.Tools;
+using IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -19,21 +19,40 @@ using System.Threading.Tasks;
 namespace dotnet_infantsSchool.Controllers
 {
     [ApiController]
-    [Route("api/login")]
+    [Route("api/[controller]/[action]")]
     public class LoginController : ControllerBase
     {
         private readonly IUserServices _userServices;
         private readonly IConfiguration _configuration;
+        private readonly IRedisHelper _redisHelper;
 
-        public LoginController(IUserServices userServices, IConfiguration configuration)
+        public LoginController(IUserServices userServices, IConfiguration configuration, IRedisHelper redisHelper)
         {
             _userServices = userServices;
             _configuration = configuration;
+            _redisHelper = redisHelper;
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<string>>> Login(LoginDto loginDto)
         {
             MessageModel<string> res = new MessageModel<string>();
+            string captcha = await _redisHelper.StringGetAsync(loginDto.Cid);
+            if (string.IsNullOrWhiteSpace(captcha))
+            {
+                res.Code = 400;
+                res.Success = false;
+                res.Msg = "验证码超时";
+                return Ok(res);
+            }
+            await _redisHelper.KeyDeleteAsync(loginDto.Cid);
+            if (captcha.ToLower() != loginDto.Captcha.ToLower())
+            {
+                res.Code = 400;
+                res.Success = false;
+                res.Msg = "验证码错误";
+                return Ok(res);
+            }
             JwtSecurityTokenHandler jwtHandler = new JwtSecurityTokenHandler();
             User user = await _userServices.GetEntitys().Where(u => u.Account == loginDto.Account && u.Pwd == loginDto.Pwd).FirstOrDefaultAsync();
             if (user == null)
@@ -58,7 +77,20 @@ namespace dotnet_infantsSchool.Controllers
                  ));
             res.Data = "Bearer " + token;
             return Ok(res);
+        }
 
+        [HttpGet]
+        public async Task<ActionResult<MessageModel<CaptchaDto>>> GetVCode()
+        {
+            MessageModel<CaptchaDto> res = new MessageModel<CaptchaDto>();
+            CaptchaDto dto = new CaptchaDto();
+            string randomString = ValidateCodeHelper.GetRandomString(4);
+            string guid = Guid.NewGuid().ToString();
+            await _redisHelper.StringSetAsync(guid, randomString, TimeSpan.FromMinutes(3));
+            dto.image = ValidateCodeHelper.CreateBase64ImageSrc(randomString);
+            dto.CId = guid;
+            res.Data = dto;
+            return Ok(res);
         }
     }
 }

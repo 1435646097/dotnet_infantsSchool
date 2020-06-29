@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Model.Entitys
 {
@@ -55,7 +53,6 @@ namespace Model.Entitys
 
             modelBuilder.Entity<Activity>(entity =>
             {
-
                 entity.Property(e => e.Name).HasMaxLength(20);
 
                 entity.Property(e => e.Remark).HasMaxLength(50);

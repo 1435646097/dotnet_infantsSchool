@@ -7,10 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Ext
 {
@@ -46,10 +43,12 @@ namespace dotnet_infantsSchool.Ext
             });
             return services;
         }
+
         public static IServiceCollection MyAuthentication(this IServiceCollection services, IConfiguration _configuration)
         {
             services.AddScoped<IAuthorizationHandler, ActionHandler>();
-            services.AddAuthentication(configureOptions=> {
+            services.AddAuthentication(configureOptions =>
+            {
                 configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 configureOptions.DefaultChallengeScheme = nameof(ApiResponseHandler);
                 configureOptions.DefaultForbidScheme = nameof(ApiResponseHandler);
@@ -74,6 +73,7 @@ namespace dotnet_infantsSchool.Ext
             });
             return services;
         }
+
         public static IServiceCollection MyCors(this IServiceCollection services)
         {
             services.AddCors(option =>

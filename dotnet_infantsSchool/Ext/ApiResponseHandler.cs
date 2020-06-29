@@ -1,14 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Model.Helper;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Model.Helper;
 
 namespace dotnet_infantsSchool.Ext
 {
@@ -17,10 +15,12 @@ namespace dotnet_infantsSchool.Ext
         public ApiResponseHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
         }
+
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             throw new NotImplementedException();
         }
+
         protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
             Response.ContentType = "application/json";

@@ -2,7 +2,7 @@
 
 namespace IRepository
 {
-    public interface IStudentRepository:IBaseRepository<Student>
+    public interface IStudentRepository : IBaseRepository<Student>
     {
     }
 }

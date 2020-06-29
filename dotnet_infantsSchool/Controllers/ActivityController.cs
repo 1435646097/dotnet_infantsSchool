@@ -7,9 +7,7 @@ using Model.Dtos;
 using Model.Entitys;
 using Model.Helper;
 using Model.Params;
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +26,7 @@ namespace dotnet_infantsSchool.Controllers
             _activityServices = activityServices;
             _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<ActivityDto>>>> GetActivity()
         {
@@ -42,6 +41,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = activityDtos;
             return Ok(res);
         }
+
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<ActivityDto>>>> GetActivityByParams([FromQuery] ActivityParams activityParams)
         {
@@ -65,6 +65,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = activityDtos;
             return Ok(res);
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<ActivityDto>>> AddActivity(ActivityAddDto activityAddDto)
         {

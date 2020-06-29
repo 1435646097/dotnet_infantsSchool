@@ -25,6 +25,7 @@ namespace dotnet_infantsSchool.Controllers
             _userRoleServices = userRoleServices;
             _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<UserRoleDto>>>> GetUserRole(int accountId)
         {
@@ -33,6 +34,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<UserRoleDto>>(userRoles);
             return Ok(res);
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<string>>> AddUserRole(int accountId, IEnumerable<int> roleIds)
         {

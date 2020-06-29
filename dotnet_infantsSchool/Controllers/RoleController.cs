@@ -3,13 +3,10 @@ using dotnet_infantsSchool.Ext;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Model.Dtos;
 using Model.Entitys;
 using Model.Helper;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +30,7 @@ namespace dotnet_infantsSchool.Controllers
             _roleActionServices = roleActionServices;
             _actionServices = actionServices;
         }
+
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<RoleDto>>>> GetRole()
         {
@@ -56,6 +54,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = roleDtos;
             return Ok(res);
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<RoleDto>>> GetRoleById(int id)
         {
@@ -73,6 +72,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = roleDto;
             return Ok(res);
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<RoleDto>>> addRole(RoleDto roleDto)
         {
@@ -83,6 +83,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Code = 201;
             return Ok(res);
         }
+
         [HttpPut]
         public async Task<ActionResult<MessageModel<RoleDto>>> EditRole(RoleDto roleDto)
         {
@@ -93,6 +94,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Code = 201;
             return Ok(res);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> deleteRole(int id)
         {

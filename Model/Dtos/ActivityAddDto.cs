@@ -13,4 +13,3 @@ namespace Model.Dtos
         public List<ActivityPicture> Pics { get; set; }
     }
 }
-

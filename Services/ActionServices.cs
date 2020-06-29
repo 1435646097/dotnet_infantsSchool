@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Model.Entitys;
 using Model.Helper;
 using Model.Params;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +23,7 @@ namespace Services
             _roleActionRepository = roleActionRepository;
             base.CurrentRepository = _actionRepository;
         }
+
         public async Task<PagedList<Model.Entitys.Action>> GetActionPaged(ActionParams actionParams)
         {
             IQueryable<Model.Entitys.Action> actions = _actionRepository.GetEntitys();
@@ -55,6 +55,7 @@ namespace Services
             }
             return await _roleActionRepository.SaveChangesAsync();
         }
+
         public async Task<bool> DeleteAction(int id)
         {
             var entity = await _actionRepository.GetEntityByIdAsync(id);
@@ -77,6 +78,5 @@ namespace Services
             }
             return await _actionRepository.SaveChangesAsync();
         }
-
     }
 }

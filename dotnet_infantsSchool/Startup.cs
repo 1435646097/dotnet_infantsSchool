@@ -1,23 +1,22 @@
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
+using Common.Tools;
 using dotnet_infantsSchool.Ext;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Model.Entitys;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using log4net;
-using log4net.Config;
-using log4net.Repository;
 
 namespace dotnet_infantsSchool
 {
@@ -36,6 +35,7 @@ namespace dotnet_infantsSchool
             repository = LogManager.CreateRepository("InfantsSchool");
             XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
             services.AddSingleton<ILoggerHelper, LogHelper>();
+            services.AddHttpContextAccessor();
             services.AddControllers(setup =>
             {
                 setup.Filters.Add(typeof(GlobalExceptionFilter));
@@ -58,6 +58,8 @@ namespace dotnet_infantsSchool
             services.MyAuthentication(_configuration);
             //Cors≈‰÷√
             services.MyCors();
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(_configuration["redisServer"]));
+            services.AddScoped<IRedisHelper, RedisHelper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

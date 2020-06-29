@@ -32,6 +32,7 @@ namespace dotnet_infantsSchool.Controllers
             _gradeServices = gradeServices;
             _mapper = mapper;
         }
+
         [HttpGet(Name = nameof(GetStudents))]
         public async Task<ActionResult<MessageModel<IEnumerable<StudentDto>>>> GetStudents([FromQuery] StudentParams studentParams)
         {
@@ -52,6 +53,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<StudentDto>>(list);
             return Ok(res);
         }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<GradeDto>>>> GetGradesInfo()
@@ -69,6 +71,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<GradeDto>>(await _gradeServices.GetEntitys().Where(g => g.UserId == uId).ToListAsync());
             return Ok(res);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteStudent(int id)
         {
@@ -85,10 +88,10 @@ namespace dotnet_infantsSchool.Controllers
             await _studentServices.DeleteEntityAsync(entity);
             return Ok(res);
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<StudentDto>>> GetStudentById(int id)
         {
-
             MessageModel<StudentDto> res = new MessageModel<StudentDto>();
             bool result = await _studentServices.ExistEntityAsync(s => s.Id == id);
             if (!result)
@@ -102,6 +105,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<StudentDto>(entity);
             return Ok(res);
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<StudentDto>>> AddStudent(StudentAddDto studentAddDto)
         {
@@ -111,6 +115,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<StudentDto>(entity);
             return Ok(res);
         }
+
         [HttpPut]
         public async Task<ActionResult<MessageModel<string>>> EditStudent(StudentEditDto studentEditDto)
         {
@@ -119,6 +124,7 @@ namespace dotnet_infantsSchool.Controllers
             await _studentServices.EditEntityAsync(entity);
             return Ok(res);
         }
+
         private string CreateLink(PagedType pagedType, StudentParams studentParams)
         {
             switch (pagedType)

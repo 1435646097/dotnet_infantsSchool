@@ -17,6 +17,7 @@ namespace Services
             _studentRepository = studentRepository;
             base.CurrentRepository = _studentRepository;
         }
+
         public async Task<PagedList<Student>> GetStudentPaged(StudentParams studentParams)
         {
             IQueryable<Student> temp = _studentRepository.GetEntitys();

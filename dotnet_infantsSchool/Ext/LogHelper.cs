@@ -1,12 +1,10 @@
 ﻿using log4net;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace dotnet_infantsSchool.Ext
 {
-    public class LogHelper:ILoggerHelper
+    public class LogHelper : ILoggerHelper
     {
         private readonly ConcurrentDictionary<Type, ILog> Loggers = new ConcurrentDictionary<Type, ILog>();
 
@@ -30,6 +28,7 @@ namespace dotnet_infantsSchool.Ext
         }
 
         /* Log a message object */
+
         /// <summary>
         /// 调试信息
         /// </summary>
@@ -39,6 +38,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Debug(source.GetType(), message);
         }
+
         /// <summary>
         /// 调试信息
         /// </summary>
@@ -49,6 +49,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Debug(source.GetType(), string.Format(message, ps));
         }
+
         /// <summary>
         /// 调试信息
         /// </summary>
@@ -62,6 +63,7 @@ namespace dotnet_infantsSchool.Ext
                 logger.Debug(message);
             }
         }
+
         /// <summary>
         /// 关键信息
         /// </summary>
@@ -71,6 +73,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Info(source.GetType(), message);
         }
+
         /// <summary>
         /// 关键信息
         /// </summary>
@@ -84,6 +87,7 @@ namespace dotnet_infantsSchool.Ext
                 logger.Info(message);
             }
         }
+
         /// <summary>
         /// 警告信息
         /// </summary>
@@ -93,6 +97,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Warn(source.GetType(), message);
         }
+
         /// <summary>
         /// 警告信息
         /// </summary>
@@ -106,6 +111,7 @@ namespace dotnet_infantsSchool.Ext
                 logger.Warn(message);
             }
         }
+
         /// <summary>
         /// 错误信息
         /// </summary>
@@ -115,6 +121,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Error(source.GetType(), message);
         }
+
         /// <summary>
         /// 错误信息
         /// </summary>
@@ -128,6 +135,7 @@ namespace dotnet_infantsSchool.Ext
                 logger.Error(message);
             }
         }
+
         /// <summary>
         /// 失败信息
         /// </summary>
@@ -137,6 +145,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Fatal(source.GetType(), message);
         }
+
         /// <summary>
         /// 失败信息
         /// </summary>
@@ -150,6 +159,7 @@ namespace dotnet_infantsSchool.Ext
                 logger.Fatal(message);
             }
         }
+
         /* Log a message object and exception */
 
         /// <summary>
@@ -162,6 +172,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Debug(source.GetType(), message, exception);
         }
+
         /// <summary>
         /// 调试信息
         /// </summary>
@@ -172,6 +183,7 @@ namespace dotnet_infantsSchool.Ext
         {
             GetLogger(source).Debug(message, exception);
         }
+
         /// <summary>
         /// 关键信息
         /// </summary>
@@ -182,6 +194,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Info(source.GetType(), message, exception);
         }
+
         /// <summary>
         /// 关键信息
         /// </summary>
@@ -192,6 +205,7 @@ namespace dotnet_infantsSchool.Ext
         {
             GetLogger(source).Info(message, exception);
         }
+
         /// <summary>
         /// 警告信息
         /// </summary>
@@ -202,6 +216,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Warn(source.GetType(), message, exception);
         }
+
         /// <summary>
         /// 警告信息
         /// </summary>
@@ -212,6 +227,7 @@ namespace dotnet_infantsSchool.Ext
         {
             GetLogger(source).Warn(message, exception);
         }
+
         /// <summary>
         /// 错误信息
         /// </summary>
@@ -222,6 +238,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Error(source.GetType(), message, exception);
         }
+
         /// <summary>
         /// 错误信息
         /// </summary>
@@ -232,6 +249,7 @@ namespace dotnet_infantsSchool.Ext
         {
             GetLogger(source).Error(message, exception);
         }
+
         /// <summary>
         /// 失败信息
         /// </summary>
@@ -242,6 +260,7 @@ namespace dotnet_infantsSchool.Ext
         {
             Fatal(source.GetType(), message, exception);
         }
+
         /// <summary>
         /// 失败信息
         /// </summary>

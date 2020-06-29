@@ -91,6 +91,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteUser(int id)
         {
@@ -108,6 +109,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Msg = "删除成功";
             return Ok(res);
         }
+
         [HttpPut]
         public async Task<ActionResult<MessageModel<UserDto>>> EditUser(UserEditDto userEditDto)
         {
@@ -125,6 +127,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
+
         [AllowAnonymous]
         [HttpGet("self")]
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
@@ -135,6 +138,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
+
         [AllowAnonymous]
         [HttpPut("self")]
         public async Task<ActionResult<MessageModel<UserDto>>> EditSelfUser(UserEditDto userEditDto)
@@ -153,6 +157,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
+
         [AllowAnonymous]
         [HttpGet("teacher")]
         public async Task<ActionResult<MessageModel<IEnumerable<TeacherDto>>>> GetTeacher()
@@ -166,6 +171,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = teacherDtos;
             return Ok(res);
         }
+
         [AllowAnonymous]
         [HttpPut("EditPass")]
         public async Task<ActionResult<MessageModel<string>>> EditPass(EditPassDto editPassDto)
@@ -183,6 +189,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Msg = "请输入正确的密码!!!";
             return Ok(res);
         }
+
         private string CreateLink(PagedType pagedType, UserParams userParams)
         {
             switch (pagedType)

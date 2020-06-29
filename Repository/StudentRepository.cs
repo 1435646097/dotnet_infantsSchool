@@ -7,7 +7,6 @@ namespace Repository
     {
         public StudentRepository(InfantsSchoolSystemContext infantsSchoolSystemContext) : base(infantsSchoolSystemContext)
         {
-
         }
     }
 }

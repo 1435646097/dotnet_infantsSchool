@@ -1,8 +1,6 @@
 ﻿using IRepository;
 using IServices;
-using Model.Dtos;
 using Model.Entitys;
-using System.Threading.Tasks;
 
 namespace Services
 {

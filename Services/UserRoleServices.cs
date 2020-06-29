@@ -2,10 +2,8 @@
 using IServices;
 using Microsoft.EntityFrameworkCore;
 using Model.Entitys;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
@@ -19,6 +17,7 @@ namespace Services
             _userRoleRepository = userRoleRepository;
             base.CurrentRepository = _userRoleRepository;
         }
+
         public async Task<bool> AddUserRoles(int accountId, IEnumerable<int> roleIds)
         {
             IEnumerable<UserRole> userRoles = await _userRoleRepository.GetEntitys().Where(u => u.AccountId == accountId).ToListAsync();
@@ -28,7 +27,7 @@ namespace Services
             }
             foreach (var item in roleIds)
             {
-                 _userRoleRepository.AddEntityAsync(new UserRole()
+                _userRoleRepository.AddEntityAsync(new UserRole()
                 {
                     AccountId = accountId,
                     RoleId = item

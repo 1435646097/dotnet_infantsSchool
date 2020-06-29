@@ -2,7 +2,7 @@
 
 namespace IRepository
 {
-    public interface IActivityRepository:IBaseRepository<Activity>
+    public interface IActivityRepository : IBaseRepository<Activity>
     {
     }
 }

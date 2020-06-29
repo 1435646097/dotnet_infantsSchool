@@ -1,8 +1,6 @@
 ﻿using Model.Dtos;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Ext
 {
@@ -27,6 +25,5 @@ namespace dotnet_infantsSchool.Ext
                 LoopToAppendChildren(all, subItem, pid);
             }
         }
-       
     }
 }

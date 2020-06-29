@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Ext
@@ -25,6 +24,7 @@ namespace dotnet_infantsSchool.Ext
             _actionServices = actionServices;
             _roleActionServices = roleActionServices;
         }
+
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ActionRequirement requirement)
         {
             HttpContext _httpContext = _httpContextAccessor.HttpContext;

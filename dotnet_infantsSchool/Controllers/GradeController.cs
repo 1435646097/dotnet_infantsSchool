@@ -8,7 +8,6 @@ using Model.Entitys;
 using Model.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
@@ -26,6 +25,7 @@ namespace dotnet_infantsSchool.Controllers
             _gradeServices = gradeServices;
             _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<GradeDto>>>> GetGrades()
         {
@@ -35,6 +35,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = gradeDtos;
             return Ok(res);
         }
+
         [HttpPost]
         public async Task<ActionResult<MessageModel<GradeDto>>> AddGrade(GradeAddDto gradeAddDto)
         {
@@ -46,6 +47,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Code = 201;
             return Ok(res);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteGrade(int id)
         {
@@ -63,6 +65,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Msg = "成功！！！";
             return Ok(res);
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<GradeDto>>> GetGradeById(int id)
         {
@@ -78,6 +81,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<GradeDto>(entity);
             return Ok(res);
         }
+
         [HttpPut]
         public async Task<ActionResult<MessageModel<string>>> EditGrade(GradeEditDto gradeEditDto)
         {

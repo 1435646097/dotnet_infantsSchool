@@ -4,7 +4,7 @@ using Model.Entitys;
 
 namespace dotnet_infantsSchool.Profiles
 {
-    public class RoleProfile:Profile
+    public class RoleProfile : Profile
     {
         public RoleProfile()
         {

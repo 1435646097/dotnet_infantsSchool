@@ -3,11 +3,10 @@ using Model.Entitys;
 
 namespace Repository
 {
-    public class RoleRepository:BaseRepository<Role>,IRoleRepository
+    public class RoleRepository : BaseRepository<Role>, IRoleRepository
     {
-        public RoleRepository(InfantsSchoolSystemContext infantsSchoolSystemContext):base(infantsSchoolSystemContext)
+        public RoleRepository(InfantsSchoolSystemContext infantsSchoolSystemContext) : base(infantsSchoolSystemContext)
         {
-
         }
     }
 }

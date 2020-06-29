@@ -2,7 +2,7 @@
 
 namespace IServices
 {
-    public interface IActivityServices:IBaseIServices<Activity>
+    public interface IActivityServices : IBaseIServices<Activity>
     {
     }
 }

@@ -1,11 +1,8 @@
 ﻿using IRepository;
 using IServices;
-using Microsoft.EntityFrameworkCore;
-using Model.Dtos;
 using Model.Entitys;
 using Model.Helper;
 using Model.Params;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

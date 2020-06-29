@@ -1,8 +1,5 @@
 ﻿using IRepository;
 using Model.Entitys;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Repository
 {
@@ -10,7 +7,6 @@ namespace Repository
     {
         public ActivityRepository(InfantsSchoolSystemContext infantsSchoolSystemContext) : base(infantsSchoolSystemContext)
         {
-
         }
     }
 }
