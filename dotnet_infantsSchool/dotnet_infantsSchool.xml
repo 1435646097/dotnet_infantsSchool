@@ -1,0 +1,680 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>dotnet_infantsSchool</name>
+    </assembly>
+    <members>
+        <member name="T:dotnet_infantsSchool.Controllers.ActionController">
+            <summary>
+            权限管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.GetActionList(Model.Params.ActionParams)">
+            <summary>
+            获取权限列表
+            </summary>
+            <param name="actionParams">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.GetActionTree">
+            <summary>
+            获取权限列表的树状结构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.GetActionById(System.Int32)">
+            <summary>
+            根据id查询权限
+            </summary>
+            <param name="id">权限id</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.GetActionByRoleId(System.Int32)">
+            <summary>
+            根据角色id查询权限
+            </summary>
+            <param name="id">角色id</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.AddAction(Model.Dtos.ActionAddDto)">
+            <summary>
+            添加权限
+            </summary>
+            <param name="actionAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.SetActionByRoleId(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            根据角色id设置其权限
+            </summary>
+            <param name="roleId"></param>
+            <param name="actionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.DeleteActionByRoleId(System.Int32,System.Int32)">
+            <summary>
+            删除角色下面的权限
+            </summary>
+            <param name="roleId"></param>
+            <param name="actionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.DeleteAction(System.Int32)">
+            <summary>
+            删除权限
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.EditAction(Model.Dtos.ActionDto)">
+            <summary>
+            修改权限
+            </summary>
+            <param name="actionDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActionController.GetUserInfo">
+            <summary>
+            获取用户个人信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.ActivityController">
+            <summary>
+            活动管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActivityController.GetActivity">
+            <summary>
+            获取所有活动
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActivityController.GetActivityByParams(Model.Params.ActivityParams)">
+            <summary>
+            根据条件获取活动
+            </summary>
+            <param name="activityParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ActivityController.AddActivity(Model.Dtos.ActivityAddDto)">
+            <summary>
+            添加活动
+            </summary>
+            <param name="activityAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ErrorController.ErrorDIY">
+            <summary>
+            自定义错误
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.ErrorController.ErrorDivideZero">
+            <summary>
+            不能被0整除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.GradeController">
+            <summary>
+            班级管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.GradeController.GetGrades">
+            <summary>
+            获取所有班级
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.GradeController.AddGrade(Model.Dtos.GradeAddDto)">
+            <summary>
+            添加班级
+            </summary>
+            <param name="gradeAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.GradeController.DeleteGrade(System.Int32)">
+            <summary>
+            根据id删除班级
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.GradeController.GetGradeById(System.Int32)">
+            <summary>
+            根据id获取班级
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.GradeController.EditGrade(Model.Dtos.GradeEditDto)">
+            <summary>
+            修改班级
+            </summary>
+            <param name="gradeEditDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.LoginController">
+            <summary>
+            登录管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.LoginController.Login(Model.Dtos.LoginDto)">
+            <summary>
+            登录
+            </summary>
+            <param name="loginDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.LoginController.GetVCode">
+            <summary>
+            获取验证码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.PhotoController">
+            <summary>
+            图片管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.PhotoController.UploadImg(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            上传图片
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.RoleController">
+            <summary>
+            角色管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.RoleController.GetRole">
+            <summary>
+            获取所有角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.RoleController.GetRoleById(System.Int32)">
+            <summary>
+            根据id获取角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.RoleController.addRole(Model.Dtos.RoleDto)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="roleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.RoleController.EditRole(Model.Dtos.RoleDto)">
+            <summary>
+            修改角色
+            </summary>
+            <param name="roleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.RoleController.deleteRole(System.Int32)">
+            <summary>
+            根据id删除角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.StudentController">
+            <summary>
+            学生管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.GetStudents(Model.Params.StudentParams)">
+            <summary>
+            获取所有学生
+            </summary>
+            <param name="studentParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.GetGradesInfo">
+            <summary>
+            获取拥有班级的信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.DeleteStudent(System.Int32)">
+            <summary>
+            根据id删除学生
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.GetStudentById(System.Int32)">
+            <summary>
+            根据id获取学生
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.AddStudent(Model.Dtos.StudentAddDto)">
+            <summary>
+            添加学生
+            </summary>
+            <param name="studentAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.StudentController.EditStudent(Model.Dtos.StudentEditDto)">
+            <summary>
+            修改学生
+            </summary>
+            <param name="studentEditDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserController.GetUser(Model.Params.UserParams)">
+            <summary>
+            获取用户
+            </summary>
+            <param name="userParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserController.getUserById(System.Int32)">
+            <summary>
+            根据id获取用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserController.AddUser(Model.Dtos.UserAddDto)">
+            <summary>
+            添加用户
+            </summary>
+            <param name="userAddDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            根据id删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserController.EditUser(Model.Dtos.UserEditDto)">
+            <summary>
+            修改用户
+            </summary>
+            <param name="userEditDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Controllers.UserRoleController">
+            <summary>
+            用户角色管理
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserRoleController.GetUserRole(System.Int32)">
+            <summary>
+            获取用户角色
+            </summary>
+            <param name="accountId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Controllers.UserRoleController.AddUserRole(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            添加用户角色
+            </summary>
+            <param name="accountId"></param>
+            <param name="roleIds"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotnet_infantsSchool.Ext.GlobalExceptionFilter">
+            <summary>
+            全局异常错误日志
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.GlobalExceptionFilter.WriteLog(System.String,System.Exception)">
+            <summary>
+            自定义返回格式
+            </summary>
+            <param name="throwMsg"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:dotnet_infantsSchool.Ext.GlobalExceptionFilter.JsonErrorResponse.Message">
+            <summary>
+            生产环境的消息
+            </summary>
+        </member>
+        <member name="P:dotnet_infantsSchool.Ext.GlobalExceptionFilter.JsonErrorResponse.DevelopmentMessage">
+            <summary>
+            开发环境的消息
+            </summary>
+        </member>
+        <member name="T:dotnet_infantsSchool.Ext.ILoggerHelper">
+            <summary>
+            日志接口
+            </summary>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Debug(System.Object,System.String)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Debug(System.Object,System.String,System.Object[])">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="ps">ps</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Debug(System.Type,System.String)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Info(System.Object,System.Object)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Info(System.Type,System.Object)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Warn(System.Object,System.Object)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Warn(System.Type,System.Object)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Error(System.Object,System.Object)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Error(System.Type,System.Object)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Fatal(System.Object,System.Object)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Fatal(System.Type,System.Object)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Debug(System.Object,System.Object,System.Exception)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Debug(System.Type,System.Object,System.Exception)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Info(System.Object,System.Object,System.Exception)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Info(System.Type,System.Object,System.Exception)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Warn(System.Object,System.Object,System.Exception)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Warn(System.Type,System.Object,System.Exception)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Error(System.Object,System.Object,System.Exception)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Error(System.Type,System.Object,System.Exception)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Fatal(System.Object,System.Object,System.Exception)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.ILoggerHelper.Fatal(System.Type,System.Object,System.Exception)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.GetLogger(System.Type)">
+            <summary>
+            获取记录器
+            </summary>
+            <param name="source">soruce</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Debug(System.Object,System.String)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Debug(System.Object,System.String,System.Object[])">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="ps">ps</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Debug(System.Type,System.String)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Info(System.Object,System.Object)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Info(System.Type,System.Object)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Warn(System.Object,System.Object)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Warn(System.Type,System.Object)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Error(System.Object,System.Object)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Error(System.Type,System.Object)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Fatal(System.Object,System.Object)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Fatal(System.Type,System.Object)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Debug(System.Object,System.Object,System.Exception)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Debug(System.Type,System.Object,System.Exception)">
+            <summary>
+            调试信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Info(System.Object,System.Object,System.Exception)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Info(System.Type,System.Object,System.Exception)">
+            <summary>
+            关键信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Warn(System.Object,System.Object,System.Exception)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Warn(System.Type,System.Object,System.Exception)">
+            <summary>
+            警告信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Error(System.Object,System.Object,System.Exception)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Error(System.Type,System.Object,System.Exception)">
+            <summary>
+            错误信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Fatal(System.Object,System.Object,System.Exception)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+        <member name="M:dotnet_infantsSchool.Ext.LogHelper.Fatal(System.Type,System.Object,System.Exception)">
+            <summary>
+            失败信息
+            </summary>
+            <param name="source">source</param>
+            <param name="message">message</param>
+            <param name="exception">ex</param>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using dotnet_infantsSchool.Ext;
+using Common.Tools;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 权限管理
+    /// </summary>
     [ApiController]
     [Authorize("actionAuthrization")]
     [Route("api/[controller]/[action]")]
@@ -36,6 +39,7 @@ namespace dotnet_infantsSchool.Controllers
             _actionServices = actionServices;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetMenu()
@@ -55,7 +59,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = menuDtoList;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 获取权限列表
+        /// </summary>
+        /// <param name="actionParams">参数</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetActionList))]
         public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionList([FromQuery] ActionParams actionParams)
         {
@@ -66,7 +74,7 @@ namespace dotnet_infantsSchool.Controllers
             string nextLink = list.HasNext ? CreateLink(PagedType.Next, actionParams) : null;
             var pagination = new
             {
-                currentPage = list.PageNum,
+                currentPage = actionParams.PageNum,
                 totalPage = list.TotalPage,
                 totalCount = list.TotalCount,
                 previousLink,
@@ -76,9 +84,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<ActionDto>>(list);
             return Ok(res);
         }
-
-        [HttpGet]
-        [AllowAnonymous]
+        /// <summary>
+        /// 获取权限列表的树状结构
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet] 
         public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
@@ -103,6 +113,7 @@ namespace dotnet_infantsSchool.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetOneTwoActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
@@ -116,9 +127,15 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = menuDtoList;
             return Ok(res);
         }
+        /// <summary>
+        /// 根据id查询权限
+        /// </summary>
+        /// <param name="id">权限id</param>
+        /// <returns></returns>
 
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<ActionDto>> GetActionById(int id)
         {
             MessageModel<ActionDto> res = new MessageModel<ActionDto>();
@@ -134,9 +151,14 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<ActionDto>(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据角色id查询权限
+        /// </summary>
+        /// <param name="id">角色id</param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<MessageModel<IEnumerable<int>>>> GetActionByRoleId(int id)
         {
             MessageModel<IEnumerable<int>> res = new MessageModel<IEnumerable<int>>();
@@ -175,7 +197,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = ids;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加权限
+        /// </summary>
+        /// <param name="actionAddDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<ActionDto>>> AddAction(ActionAddDto actionAddDto)
         {
@@ -186,6 +212,12 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<ActionDto>(entity);
             return Ok(res);
         }
+        /// <summary>
+        /// 根据角色id设置其权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="actionId"></param>
+        /// <returns></returns>
 
         [HttpPost("{roleId}")]
         public async Task<ActionResult<MessageModel<string>>> SetActionByRoleId(int roleId, IEnumerable<int> actionId)
@@ -202,6 +234,12 @@ namespace dotnet_infantsSchool.Controllers
             await _actionServices.SetRoleAction(roleId, actionId);
             return Ok(res);
         }
+        /// <summary>
+        /// 删除角色下面的权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="actionId"></param>
+        /// <returns></returns>
 
         [HttpDelete("{roleId}/Action/{actionId}")]
         public async Task<ActionResult<MessageModel<ActionTreeDto>>> DeleteActionByRoleId(int roleId, int actionId)
@@ -230,6 +268,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = actionTreeDtos.Where(a => a.Pid == 0).ToList();
             return Ok(res);
         }
+        /// <summary>
+        /// 删除权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteAction(int id)
@@ -246,7 +289,11 @@ namespace dotnet_infantsSchool.Controllers
 
             return Ok(res);
         }
-
+        /// <summary>
+        /// 修改权限
+        /// </summary>
+        /// <param name="actionDto"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<MessageModel<string>>> EditAction(ActionDto actionDto)
         {
@@ -287,9 +334,13 @@ namespace dotnet_infantsSchool.Controllers
             }
             return string.Empty;
         }
-
+        /// <summary>
+        /// 获取用户个人信息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
         {
             MessageModel<UserDto> res = new MessageModel<UserDto>();

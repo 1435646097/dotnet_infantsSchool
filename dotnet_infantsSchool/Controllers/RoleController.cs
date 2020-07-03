@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using dotnet_infantsSchool.Ext;
+using Common.Tools;
 using IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 角色管理
+    /// </summary>
     [ApiController]
     [Route("api/role")]
     [Authorize("actionAuthrization")]
@@ -30,7 +33,10 @@ namespace dotnet_infantsSchool.Controllers
             _roleActionServices = roleActionServices;
             _actionServices = actionServices;
         }
-
+        /// <summary>
+        /// 获取所有角色
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<RoleDto>>>> GetRole()
         {
@@ -54,7 +60,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = roleDtos;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id获取角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<RoleDto>>> GetRoleById(int id)
         {
@@ -72,7 +82,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = roleDto;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <param name="roleDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<RoleDto>>> addRole(RoleDto roleDto)
         {
@@ -83,7 +97,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Code = 201;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 修改角色
+        /// </summary>
+        /// <param name="roleDto"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<MessageModel<RoleDto>>> EditRole(RoleDto roleDto)
         {
@@ -94,7 +112,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Code = 201;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id删除角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> deleteRole(int id)
         {

@@ -30,7 +30,11 @@ namespace dotnet_infantsSchool.Controllers
             _userRoleServices = userRoleServices;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// 获取用户
+        /// </summary>
+        /// <param name="userParams"></param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetUser))]
         public async Task<ActionResult<IEnumerable<MessageModel<UserDto>>>> GetUser([FromQuery] UserParams userParams)
         {
@@ -54,7 +58,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = userDtos;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id获取用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<UserDto>>> getUserById(int id)
         {
@@ -71,7 +79,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加用户
+        /// </summary>
+        /// <param name="userAddDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<UserDto>>> AddUser(UserAddDto userAddDto)
         {
@@ -91,7 +103,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteUser(int id)
         {
@@ -104,12 +120,15 @@ namespace dotnet_infantsSchool.Controllers
                 res.Success = false;
                 return Ok(res);
             }
-            Model.Entitys.User entity = await _userServices.GetEntityByIdAsync(id);
-            await _userServices.DeleteEntityAsync(entity);
+            await _userServices.deleteUserAsync(id);
             res.Msg = "删除成功";
             return Ok(res);
         }
-
+        /// <summary>
+        /// 修改用户
+        /// </summary>
+        /// <param name="userEditDto"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<MessageModel<UserDto>>> EditUser(UserEditDto userEditDto)
         {
@@ -127,7 +146,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AllowAnonymous]
         [HttpGet("self")]
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
@@ -138,7 +157,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AllowAnonymous]
         [HttpPut("self")]
         public async Task<ActionResult<MessageModel<UserDto>>> EditSelfUser(UserEditDto userEditDto)
@@ -157,7 +176,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<UserDto>(entity);
             return Ok(res);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AllowAnonymous]
         [HttpGet("teacher")]
         public async Task<ActionResult<MessageModel<IEnumerable<TeacherDto>>>> GetTeacher()
@@ -171,7 +190,7 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = teacherDtos;
             return Ok(res);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AllowAnonymous]
         [HttpPut("EditPass")]
         public async Task<ActionResult<MessageModel<string>>> EditPass(EditPassDto editPassDto)

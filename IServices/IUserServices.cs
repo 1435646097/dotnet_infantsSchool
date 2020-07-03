@@ -8,5 +8,6 @@ namespace IServices
     public interface IUserServices : IBaseIServices<User>
     {
         Task<PagedList<User>> GetUserPagedAsync(UserParams userParams);
+        Task<bool> deleteUserAsync(int id);
     }
 }

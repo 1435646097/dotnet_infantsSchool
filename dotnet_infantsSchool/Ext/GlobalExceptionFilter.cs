@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace dotnet_infantsSchool.Ext
@@ -11,10 +12,10 @@ namespace dotnet_infantsSchool.Ext
     /// </summary>
     public class GlobalExceptionFilter : IExceptionFilter
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly ILoggerHelper _loggerHelper;
 
-        public GlobalExceptionFilter(IHostingEnvironment env, ILoggerHelper loggerHelper)
+        public GlobalExceptionFilter(IWebHostEnvironment env, ILoggerHelper loggerHelper)
         {
             _env = env;
             _loggerHelper = loggerHelper;

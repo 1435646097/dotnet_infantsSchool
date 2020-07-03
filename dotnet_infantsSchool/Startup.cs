@@ -49,7 +49,7 @@ namespace dotnet_infantsSchool
             services.AddDbContextPool<InfantsSchoolSystemContext>(option =>
             {
                 option.UseSqlServer(_configuration.GetConnectionString("default"));
-                option.EnableSensitiveDataLogging();
+                //option.EnableSensitiveDataLogging();
                 option.UseLazyLoadingProxies();
             });
             //Swagger≈‰÷√
@@ -83,6 +83,7 @@ namespace dotnet_infantsSchool
             {
                 endpoints.MapControllers();
             });
+
         }
 
         public void ConfigureContainer(ContainerBuilder containerBuilder)

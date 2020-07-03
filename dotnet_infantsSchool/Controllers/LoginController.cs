@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 登录管理
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class LoginController : ControllerBase
@@ -32,7 +35,11 @@ namespace dotnet_infantsSchool.Controllers
             _configuration = configuration;
             _redisHelper = redisHelper;
         }
-
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<string>>> Login(LoginDto loginDto)
         {
@@ -78,7 +85,10 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = "Bearer " + token;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<MessageModel<CaptchaDto>>> GetVCode()
         {

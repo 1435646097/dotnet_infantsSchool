@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 图片管理
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
@@ -19,12 +22,16 @@ namespace dotnet_infantsSchool.Controllers
         private readonly IUserServices _userServices;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PhotoController(IUserServices userServices, IHttpContextAccessor httpContextAccessor)
+        public PhotoController(IUserServices userServices, IHttpContextAccessor httpContextAccessor )
         {
             _userServices = userServices;
             _httpContextAccessor = httpContextAccessor;
         }
-
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<MessageModel<string>> UploadImg([FromServices] IWebHostEnvironment environment)
         {

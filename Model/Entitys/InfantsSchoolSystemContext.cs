@@ -81,7 +81,7 @@ namespace Model.Entitys
 
                 entity.Property(e => e.TypeName).HasMaxLength(30);
             });
-
+            
             modelBuilder.Entity<Grade>(entity =>
             {
                 entity.Property(e => e.CreateTime).HasColumnType("date");
@@ -89,11 +89,12 @@ namespace Model.Entitys
                 entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Name).HasMaxLength(30);
-
+               
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Grade)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Grade__AccountId__35BCFE0A");
+                    .HasConstraintName("FK__Grade__AccountId__35BCFE0A")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<GradeCost>(entity =>
@@ -179,12 +180,12 @@ namespace Model.Entitys
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97").OnDelete(DeleteBehavior.Cascade);
+                    .HasConstraintName("FK__AccountRo__Accou__2B3F6F97");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__UserRole__RoleId__4D94879B").OnDelete(DeleteBehavior.Cascade);
+                    .HasConstraintName("FK__UserRole__RoleId__4D94879B");
             });
 
             OnModelCreatingPartial(modelBuilder);

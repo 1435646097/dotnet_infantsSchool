@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 活动管理
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize("actionAuthrization")]
@@ -26,7 +29,10 @@ namespace dotnet_infantsSchool.Controllers
             _activityServices = activityServices;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// 获取所有活动
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<ActivityDto>>>> GetActivity()
         {
@@ -41,7 +47,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = activityDtos;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据条件获取活动
+        /// </summary>
+        /// <param name="activityParams"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<ActivityDto>>>> GetActivityByParams([FromQuery] ActivityParams activityParams)
         {
@@ -65,7 +75,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = activityDtos;
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加活动
+        /// </summary>
+        /// <param name="activityAddDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<ActivityDto>>> AddActivity(ActivityAddDto activityAddDto)
         {

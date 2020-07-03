@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Dtos;
@@ -11,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 用户角色管理
+    /// </summary>
     [ApiController]
     [Route("api/userRole/{accountId}")]
     public class UserRoleController : ControllerBase
@@ -25,7 +29,11 @@ namespace dotnet_infantsSchool.Controllers
             _userRoleServices = userRoleServices;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// 获取用户角色
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<MessageModel<IEnumerable<UserRoleDto>>>> GetUserRole(int accountId)
         {
@@ -34,7 +42,12 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<UserRoleDto>>(userRoles);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加用户角色
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="roleIds"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<string>>> AddUserRole(int accountId, IEnumerable<int> roleIds)
         {

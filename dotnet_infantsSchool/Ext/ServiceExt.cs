@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
+using System.IO;
 using System.Text;
 
 namespace dotnet_infantsSchool.Ext
@@ -40,6 +41,7 @@ namespace dotnet_infantsSchool.Ext
                     Name = "Authorization",
                     Description = "请输入accessToken"
                 });
+                setup.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "dotnet_infantsSchool.xml"), true);
             });
             return services;
         }

@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_infantsSchool.Controllers
 {
+    /// <summary>
+    /// 学生管理
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize("actionAuthrization")]
@@ -32,7 +35,11 @@ namespace dotnet_infantsSchool.Controllers
             _gradeServices = gradeServices;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// 获取所有学生
+        /// </summary>
+        /// <param name="studentParams"></param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetStudents))]
         public async Task<ActionResult<MessageModel<IEnumerable<StudentDto>>>> GetStudents([FromQuery] StudentParams studentParams)
         {
@@ -53,9 +60,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<StudentDto>>(list);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 获取拥有班级的信息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<MessageModel<IEnumerable<GradeDto>>>> GetGradesInfo()
         {
             MessageModel<IEnumerable<GradeDto>> res = new MessageModel<IEnumerable<GradeDto>>();
@@ -71,7 +80,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<IEnumerable<GradeDto>>(await _gradeServices.GetEntitys().Where(g => g.UserId == uId).ToListAsync());
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id删除学生
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageModel<string>>> DeleteStudent(int id)
         {
@@ -88,7 +101,11 @@ namespace dotnet_infantsSchool.Controllers
             await _studentServices.DeleteEntityAsync(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 根据id获取学生
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageModel<StudentDto>>> GetStudentById(int id)
         {
@@ -105,7 +122,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<StudentDto>(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 添加学生
+        /// </summary>
+        /// <param name="studentAddDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<MessageModel<StudentDto>>> AddStudent(StudentAddDto studentAddDto)
         {
@@ -115,7 +136,11 @@ namespace dotnet_infantsSchool.Controllers
             res.Data = _mapper.Map<StudentDto>(entity);
             return Ok(res);
         }
-
+        /// <summary>
+        /// 修改学生
+        /// </summary>
+        /// <param name="studentEditDto"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<MessageModel<string>>> EditStudent(StudentEditDto studentEditDto)
         {

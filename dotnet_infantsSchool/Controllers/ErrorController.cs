@@ -8,20 +8,27 @@ namespace dotnet_infantsSchool.Controllers
     [ApiController]
     public class ErrorController : ControllerBase
     {
-        private readonly ILogger<ErrorController> _logger;
+        //private readonly ILogger<ErrorController> _logger;
+        //ILogger<ErrorController> logger
 
-        public ErrorController(ILogger<ErrorController> logger)
+        public ErrorController()
         {
-            _logger = logger;
+            //_logger = logger;
         }
-
+        /// <summary>
+        /// 自定义错误
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult ErrorDIY()
         {
             throw new Exception("这个地方错问题啦啦啦！！！");
             return Ok();
         }
-
+        /// <summary>
+        /// 不能被0整除
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult ErrorDivideZero()
         {

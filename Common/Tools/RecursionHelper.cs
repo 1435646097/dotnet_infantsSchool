@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace dotnet_infantsSchool.Ext
+namespace Common.Tools
 {
     public static class RecursionHelper
     {
