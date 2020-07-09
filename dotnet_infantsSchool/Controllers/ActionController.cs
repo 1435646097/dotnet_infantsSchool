@@ -45,7 +45,7 @@ namespace dotnet_infantsSchool.Controllers
         public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetMenu()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
-            string uid = HttpContext.User.Claims.Where(c => c.Type == "id").FirstOrDefault().Value;
+            string uid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
             User entity = await _userServices.GetEntityByIdAsync(Convert.ToInt32(uid));
             var rids = entity.UserRole.Select(r => r.RoleId);
             var aids = _roleActionServices.GetEntitys().Where(r => rids.Contains(r.RoleId)).Select(r => r.ActionId);
@@ -65,7 +65,7 @@ namespace dotnet_infantsSchool.Controllers
         /// <param name="actionParams">参数</param>
         /// <returns></returns>
         [HttpGet(Name = nameof(GetActionList))]
-        public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionList([FromQuery] ActionParams actionParams)
+        public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetActionList([FromQuery] ActionParams actionParams)
         {
             MessageModel<IEnumerable<ActionDto>> res = new MessageModel<IEnumerable<ActionDto>>();
             PagedList<Model.Entitys.Action> list = await _actionServices.GetActionPaged(actionParams);
@@ -88,8 +88,8 @@ namespace dotnet_infantsSchool.Controllers
         /// 获取权限列表的树状结构
         /// </summary>
         /// <returns></returns>
-        [HttpGet] 
-        public async Task<ActionResult<IEnumerable<MenuDto>>> GetActionTree()
+        [HttpGet]
+        public async Task<ActionResult<MessageModel<IEnumerable<MenuDto>>>> GetActionTree()
         {
             MessageModel<IEnumerable<MenuDto>> res = new MessageModel<IEnumerable<MenuDto>>();
             //获得所有的一级权限
@@ -136,7 +136,7 @@ namespace dotnet_infantsSchool.Controllers
         [HttpGet("{id}")]
         [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<ActionResult<ActionDto>> GetActionById(int id)
+        public async Task<ActionResult<MessageModel<ActionDto>>> GetActionById(int id)
         {
             MessageModel<ActionDto> res = new MessageModel<ActionDto>();
             bool result = await _actionServices.ExistEntityAsync(a => a.Id == id);
@@ -178,7 +178,7 @@ namespace dotnet_infantsSchool.Controllers
             List<int> twoActionIds = actionList.Where(a => oneActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
             foreach (var item in oneActionIds)
             {
-                var temp = actionList.Where(a => a.Pid == item).FirstOrDefault();
+                var temp = actionList.FirstOrDefault(a => a.Pid == item);
                 if (temp == null)
                 {
                     ids.Add(item);
@@ -186,13 +186,13 @@ namespace dotnet_infantsSchool.Controllers
             }
             foreach (var item in twoActionIds)
             {
-                var temp = actionList.Where(a => a.Pid == item).FirstOrDefault();
+                var temp = actionList.FirstOrDefault(a => a.Pid == item);
                 if (temp == null)
                 {
                     ids.Add(item);
                 }
             }
-            List<int> threeActionIds = actionList.Where(a => twoActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
+            List<int> threeActionIds = actionList.Where(a => a.Pid != null && twoActionIds.Contains((int)a.Pid)).Select(a => a.Id).ToList();
             ids.AddRange(threeActionIds);
             res.Data = ids;
             return Ok(res);
@@ -344,7 +344,7 @@ namespace dotnet_infantsSchool.Controllers
         public async Task<ActionResult<MessageModel<UserDto>>> GetUserInfo()
         {
             MessageModel<UserDto> res = new MessageModel<UserDto>();
-            string uid = HttpContext.User.Claims.Where(c => c.Type == "id").FirstOrDefault().Value;
+            string uid = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
             Model.Entitys.User entity = await _userServices.GetEntityByIdAsync(Convert.ToInt32(uid));
             UserDto dto = _mapper.Map<UserDto>(entity);
             res.Data = dto;

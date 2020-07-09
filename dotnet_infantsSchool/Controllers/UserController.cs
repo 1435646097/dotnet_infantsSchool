@@ -36,7 +36,7 @@ namespace dotnet_infantsSchool.Controllers
         /// <param name="userParams"></param>
         /// <returns></returns>
         [HttpGet(Name = nameof(GetUser))]
-        public async Task<ActionResult<IEnumerable<MessageModel<UserDto>>>> GetUser([FromQuery] UserParams userParams)
+        public async Task<ActionResult<MessageModel<IEnumerable<UserDto>>>> GetUser([FromQuery] UserParams userParams)
         {
             MessageModel<IEnumerable<UserDto>> res = new MessageModel<IEnumerable<UserDto>>();
             PagedList<User> list = await _userServices.GetUserPagedAsync(userParams);
@@ -63,7 +63,7 @@ namespace dotnet_infantsSchool.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(getUserById))]
         public async Task<ActionResult<MessageModel<UserDto>>> getUserById(int id)
         {
             MessageModel<UserDto> res = new MessageModel<UserDto>();
@@ -73,7 +73,7 @@ namespace dotnet_infantsSchool.Controllers
                 res.Code = 404;
                 res.Success = false;
                 res.Msg = "请输入正确的账户ID";
-                return Ok(res);
+                return NotFound(res);
             }
             Model.Entitys.User entity = await _userServices.GetEntityByIdAsync(id);
             res.Data = _mapper.Map<UserDto>(entity);
@@ -94,14 +94,14 @@ namespace dotnet_infantsSchool.Controllers
                 res.Code = 400;
                 res.Success = false;
                 res.Msg = "该账户已存在，请修改账户！！！";
-                return Ok(res);
+                return BadRequest(res);
             }
             Model.Entitys.User entity = _mapper.Map<User>(userAddDto);
             entity.IsDelete = false;
             await _userServices.AddEntityAsync(entity);
             res.Code = 201;
             res.Data = _mapper.Map<UserDto>(entity);
-            return Ok(res);
+            return CreatedAtRoute(nameof(getUserById), new { id = entity.Id }, res);
         }
         /// <summary>
         /// 根据id删除用户
@@ -118,7 +118,7 @@ namespace dotnet_infantsSchool.Controllers
                 res.Code = 404;
                 res.Msg = "请输入正确的用户编号";
                 res.Success = false;
-                return Ok(res);
+                return NotFound(res);
             }
             await _userServices.deleteUserAsync(id);
             res.Msg = "删除成功";
@@ -139,7 +139,7 @@ namespace dotnet_infantsSchool.Controllers
                 res.Code = 404;
                 res.Msg = "请输入正确的用户编号";
                 res.Success = false;
-                return Ok(res);
+                return NotFound(res);
             }
             Model.Entitys.User entity = _mapper.Map<User>(userEditDto);
             await _userServices.EditEntityAsync(entity);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Entitys;
+using Model.Helper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace dotnet_infantsSchool.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CostType>>> GetCostType()
+        public async Task<ActionResult<MessageModel<IEnumerable<CostType>>>> GetCostType()
         {
             CostType list = await _costTypeServices.GetEntityByIdAsync(1);
             return Ok(list);
